@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaitlyn Brianna — Client Experience & Fashion</title>
+<meta name="description" content="Client-focused fashion professional creating meaningful, lasting experiences.">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,400;1,6..96,500;1,6..96,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --tan: #C4A882;
+  --tan-light: #D4BFA0;
+  --tan-dark: #A88B64;
+  --black: #0A0A0A;
+  --black-soft: #1A1A1A;
+  --white: #FAFAF8;
+  --white-pure: #FFFFFF;
+  --gray: #888888;
+  --gray-light: #E8E6E2;
+  --ff-serif: 'Bodoni Moda', 'Didot', 'Bodoni MT', Georgia, serif;
+  --ff-sans: 'Inter', Helvetica Neue, Arial, sans-serif;
+  --ff-display: 'Bodoni Moda', 'Didot', 'Bodoni MT', Georgia, serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: var(--tan) var(--black); }
+body { font-family: var(--ff-sans); background: var(--black); color: var(--white); line-height: 1.6; overflow-x: hidden; cursor: none; }
+a { text-decoration: none; color: inherit; cursor: none; }
+img { max-width: 100%; display: block; }
+button { cursor: none; border: none; background: none; font-family: inherit; }
+::selection { background: var(--tan); color: var(--black); }
+
+/* CURSOR */
+.cursor { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background: var(--tan); border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; transition: transform 0.15s var(--ease-out-expo); }
+.cursor-follower { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid var(--tan); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.4s var(--ease-out-expo), width 0.3s, height 0.3s, border-color 0.3s; }
+.cursor.hovering { transform: scale(2.5); }
+.cursor-follower.hovering { width: 60px; height: 60px; border-color: var(--white); }
+@media (hover: none) { .cursor, .cursor-follower { display: none; } body, a, button { cursor: auto; } }
+
+/* PRELOADER */
+.preloader { position: fixed; inset: 0; background: var(--black); z-index: 99999; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s; }
+.preloader.hidden { opacity: 0; visibility: hidden; }
+.preloader-text { font-family: var(--ff-display); font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; color: var(--tan); overflow: hidden; }
+.preloader-text span { display: inline-block; transform: translateY(100%); animation: preloaderReveal 0.6s var(--ease-out-expo) forwards; }
+.preloader-line { width: 0; height: 1px; background: var(--tan); margin-top: 1.5rem; animation: preloaderLine 1.8s var(--ease-in-out) 0.4s forwards; }
+@keyframes preloaderReveal { to { transform: translateY(0); } }
+@keyframes preloaderLine { to { width: 200px; } }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; transition: padding 0.4s var(--ease-out-expo); }
+.nav-logo { font-family: var(--ff-display); font-size: 1.4rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); }
+.nav-logo em { font-style: italic; color: var(--tan); }
+.nav-menu { display: flex; gap: 2.5rem; list-style: none; }
+.nav-menu a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); position: relative; padding: 0.25rem 0; }
+.nav-menu a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--tan); transition: width 0.4s var(--ease-out-expo); }
+.nav-menu a:hover::after { width: 100%; }
+
+.chapter-nav { position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); z-index: 1000; display: flex; flex-direction: column; gap: 1.2rem; mix-blend-mode: difference; }
+.chapter-dot { width: 8px; height: 8px; border: 1px solid var(--white); border-radius: 50%; transition: all 0.4s var(--ease-out-expo); position: relative; }
+.chapter-dot.active { background: var(--tan); border-color: var(--tan); transform: scale(1.4); }
+.chapter-dot::before { content: attr(data-label); position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; opacity: 0; transition: opacity 0.3s; color: var(--white); }
+.chapter-dot:hover::before { opacity: 1; }
+
+.hamburger { display: none; flex-direction: column; gap: 6px; z-index: 1001; padding: 4px; }
+.hamburger span { display: block; width: 28px; height: 1px; background: var(--white); transition: all 0.4s var(--ease-out-expo); }
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+.mobile-menu { position: fixed; inset: 0; background: var(--black); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.6s var(--ease-out-expo); }
+.mobile-menu.open { opacity: 1; visibility: visible; }
+.mobile-menu-list { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 2rem; }
+.mobile-menu-list a { font-family: var(--ff-display); font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 300; letter-spacing: 0.1em; color: var(--white); transition: color 0.3s; }
+.mobile-menu-list a:hover { color: var(--tan); }
+
+/* SECTIONS */
+section { position: relative; overflow: hidden; }
+.section-label { font-family: var(--ff-sans); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--tan); margin-bottom: 2rem; }
+.section-label::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--tan); margin-right: 1rem; vertical-align: middle; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* HERO */
+.hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; background: var(--black); }
+.hero-content { text-align: center; position: relative; z-index: 2; }
+.hero-overline { font-family: var(--ff-sans); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.5em; text-transform: uppercase; color: var(--tan); margin-bottom: 2rem; opacity: 0; transform: translateY(20px); }
+.hero-name { font-family: var(--ff-serif); font-size: clamp(3.5rem, 10vw, 10rem); font-weight: 500; line-height: 0.9; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem; }
+.hero-name .line { display: block; overflow: hidden; }
+.hero-name .line span { display: inline-block; transform: translateY(110%); }
+.hero-name .italic { font-style: italic; font-weight: 400; color: var(--tan); }
+.hero-title { font-family: var(--ff-display); font-size: clamp(1rem, 2.5vw, 1.6rem); font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray); opacity: 0; transform: translateY(20px); }
+.hero-scroll { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.75rem; opacity: 0; }
+.hero-scroll span { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gray); }
+.hero-scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--tan), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100% { opacity: 0.3; transform: scaleY(0.5); } 50% { opacity: 1; transform: scaleY(1); } }
+.hero-deco { position: absolute; font-family: var(--ff-display); font-size: 15vw; font-weight: 300; color: var(--black-soft); opacity: 0.15; user-select: none; pointer-events: none; }
+.hero-deco-left { top: 10%; left: -5%; }
+.hero-deco-right { bottom: 10%; right: -5%; }
+
+/* MARQUEE */
+.marquee-section { padding: 0; overflow: hidden; background: var(--black); border-top: 1px solid rgba(196,168,130,0.15); border-bottom: 1px solid rgba(196,168,130,0.15); }
+.marquee-track { display: flex; white-space: nowrap; animation: marqueeScroll 30s linear infinite; padding: 1.5rem 0; }
+.marquee-item { font-family: var(--ff-display); font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); padding: 0 2rem; flex-shrink: 0; }
+.marquee-item .dot { display: inline-block; width: 6px; height: 6px; background: var(--tan); border-radius: 50%; margin: 0 2rem; vertical-align: middle; }
+@keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ABOUT */
+.about { padding: 10rem 3rem; background: var(--white); color: var(--black); }
+.about-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+.about-image-wrapper { position: relative; }
+.about-image { width: 100%; aspect-ratio: 3/4; position: relative; overflow: hidden; }
+.about-image img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.about-image::after { content: ''; position: absolute; top: 1.5rem; left: 1.5rem; right: -1.5rem; bottom: -1.5rem; border: 1px solid var(--tan); z-index: -1; }
+.about-chapter { font-family: var(--ff-display); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--tan-dark); margin-bottom: 1.5rem; }
+.about-heading { font-family: var(--ff-serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 400; line-height: 1.1; margin-bottom: 2rem; color: var(--black); }
+.about-heading em { font-style: italic; font-weight: 400; color: var(--tan-dark); }
+.about-text { font-size: 1rem; line-height: 1.8; color: #555; margin-bottom: 1.5rem; max-width: 520px; }
+.about-stats { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--gray-light); }
+.stat-number { font-family: var(--ff-serif); font-size: 2.5rem; font-weight: 500; color: var(--black); line-height: 1; }
+.stat-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-top: 0.5rem; }
+
+/* PORTFOLIO */
+.portfolio { background: var(--black); padding: 8rem 0; }
+.portfolio-header { text-align: center; padding: 0 3rem 5rem; }
+.portfolio-heading { font-family: var(--ff-serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 500; line-height: 1; margin-bottom: 1.5rem; }
+.portfolio-heading em { font-style: italic; font-weight: 400; color: var(--tan); }
+.portfolio-subhead { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 300; letter-spacing: 0.15em; color: var(--gray); max-width: 600px; margin: 0 auto; }
+
+.project { display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh; border-top: 1px solid rgba(255,255,255,0.06); }
+.project:nth-child(even) .project-image { order: 2; }
+.project:nth-child(even) .project-info { order: 1; }
+.project-image { position: relative; overflow: hidden; background: var(--black-soft); }
+.project-image-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.8s var(--ease-out-expo); background: linear-gradient(135deg, #2A2520, #1A1A1A); }
+.project-image-inner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-out-expo); }
+.project:hover .project-image-inner img, .project:hover .project-image-inner { transform: scale(1.03); }
+.project-image-label { font-family: var(--ff-display); font-size: 1.5rem; font-style: italic; color: var(--tan); opacity: 0.5; }
+.project-info { display: flex; flex-direction: column; justify-content: center; padding: 4rem 5rem; }
+.project-number { font-family: var(--ff-display); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--tan); margin-bottom: 2rem; }
+.project-title { font-family: var(--ff-serif); font-size: clamp(2rem, 3vw, 3rem); font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; }
+.project-role { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.5rem; }
+.project-desc { font-size: 0.95rem; line-height: 1.8; color: var(--gray); margin-bottom: 2rem; max-width: 450px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem; }
+.project-tag { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 1rem; border: 1px solid rgba(196,168,130,0.3); color: var(--tan-light); }
+.project-link { display: inline-flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); transition: color 0.3s; }
+.project-link:hover { color: var(--tan); }
+.project-link-arrow { display: inline-block; width: 2rem; height: 1px; background: var(--tan); position: relative; transition: width 0.4s var(--ease-out-expo); }
+.project-link:hover .project-link-arrow { width: 3rem; }
+.project-link-arrow::after { content: ''; position: absolute; right: 0; top: -3px; border: solid var(--tan); border-width: 0 1px 1px 0; padding: 3px; transform: rotate(-45deg); }
+.project-stats { display: flex; gap: 2.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.ps-num { font-family: var(--ff-serif); font-size: 2rem; font-weight: 500; color: var(--tan); line-height: 1; }
+.ps-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
+
+/* COMMUNITY */
+.community { background: var(--white); color: var(--black); padding: 10rem 3rem; }
+.community-inner { max-width: 1400px; margin: 0 auto; }
+.community-header { text-align: center; margin-bottom: 6rem; }
+.community-heading { font-family: var(--ff-serif); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 500; line-height: 1.1; color: var(--black); margin-bottom: 1rem; }
+.community-heading em { font-style: italic; font-weight: 400; color: var(--tan-dark); }
+.community-subhead { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 300; letter-spacing: 0.1em; color: var(--gray); max-width: 550px; margin: 0 auto; }
+.community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.comm-card { background: var(--white-pure); border: 1px solid var(--gray-light); padding: 2.5rem; transition: all 0.5s var(--ease-out-expo); position: relative; overflow: hidden; }
+.comm-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--tan); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease-out-expo); }
+.comm-card:hover::before { transform: scaleX(1); }
+.comm-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+.comm-card-image { width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, var(--gray-light), #D5CFC5); margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; font-family: var(--ff-display); font-style: italic; color: var(--gray); overflow: hidden; }
+.comm-card-image img { width: 100%; height: 100%; object-fit: cover; }
+.comm-card-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tan-dark); margin-bottom: 1rem; }
+.comm-card-title { font-family: var(--ff-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; color: var(--black); }
+.comm-card-desc { font-size: 0.9rem; line-height: 1.7; color: #666; margin-bottom: 1.5rem; }
+.comm-card-link { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan-dark); display: inline-flex; align-items: center; gap: 0.5rem; transition: gap 0.3s var(--ease-out-expo); }
+.comm-card-link:hover { gap: 1rem; }
+
+/* LOOKBOOKS */
+.lookbooks { background: var(--black); padding: 10rem 3rem; }
+.lookbooks-header { text-align: center; margin-bottom: 5rem; }
+.lookbooks-heading { font-family: var(--ff-serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 500; line-height: 1; margin-bottom: 1.5rem; }
+.lookbooks-heading em { font-style: italic; font-weight: 400; color: var(--tan); }
+.lookbooks-subhead { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 300; letter-spacing: 0.1em; color: var(--gray); max-width: 500px; margin: 0 auto; }
+.lookbook-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+.lookbook-item { position: relative; overflow: hidden; background: var(--black-soft); aspect-ratio: 3/4; }
+.lookbook-item-inner { width: 100%; height: 100%; transition: transform 0.7s var(--ease-out-expo); display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2A2520, #1A1510); }
+.lookbook-item-inner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease-out-expo); }
+.lookbook-item:hover .lookbook-item-inner, .lookbook-item:hover .lookbook-item-inner img { transform: scale(1.08); }
+.lookbook-overlay { position: absolute; inset: 0; background: rgba(10,10,10,0.7); display: flex; align-items: flex-end; padding: 1.5rem; opacity: 0; transition: opacity 0.4s; }
+.lookbook-item:hover .lookbook-overlay { opacity: 1; }
+.lookbook-overlay-title { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.1em; color: var(--white); }
+.lookbook-overlay-cat { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-top: 0.3rem; }
+.lb-tall { grid-row: span 2; }
+.lb-wide { grid-column: span 2; }
+.lb-featured { grid-column: span 2; grid-row: span 2; }
+
+/* SERVICE */
+.service { background: var(--white); color: var(--black); padding: 10rem 3rem; border-top: 1px solid var(--gray-light); }
+.service-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: start; }
+.service-heading { font-family: var(--ff-serif); font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 400; line-height: 1.15; margin-bottom: 2rem; }
+.service-heading em { font-style: italic; font-weight: 400; color: var(--tan-dark); }
+.service-intro { font-size: 0.95rem; line-height: 1.8; color: #555; max-width: 420px; }
+.pillar { padding: 2.2rem 0; border-bottom: 1px solid var(--gray-light); }
+.pillar:first-child { border-top: 1px solid var(--gray-light); }
+.pillar-num { font-family: var(--ff-display); font-style: italic; font-size: 0.85rem; color: var(--tan-dark); margin-bottom: 0.5rem; }
+.pillar-h { font-family: var(--ff-serif); font-size: 1.15rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--black); }
+.pillar-p { font-size: 0.88rem; line-height: 1.75; color: #666; }
+
+/* SKILLS */
+.skills-strip { background: var(--black); padding: 5rem 3rem; border-top: 1px solid rgba(196,168,130,0.12); }
+.skills-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; }
+.sg-title { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tan); font-weight: 500; margin-bottom: 1rem; }
+.sg-items { font-size: 0.85rem; line-height: 2.1; color: var(--gray); }
+
+/* CONTACT */
+.contact { background: var(--black); padding: 10rem 3rem; border-top: 1px solid rgba(196,168,130,0.1); }
+.contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+.contact-heading { font-family: var(--ff-serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 500; line-height: 1.1; margin-bottom: 2rem; }
+.contact-heading em { font-style: italic; font-weight: 400; color: var(--tan); }
+.contact-text { font-size: 1rem; line-height: 1.8; color: var(--gray); margin-bottom: 2rem; max-width: 400px; }
+.contact-details { margin-bottom: 2rem; }
+.contact-details a { display: block; font-size: 0.85rem; color: var(--gray); margin-bottom: 0.5rem; transition: color 0.3s; }
+.contact-details a:hover { color: var(--tan); }
+.contact-socials { display: flex; gap: 2rem; }
+.contact-social-link { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); transition: color 0.3s; position: relative; }
+.contact-social-link:hover { color: var(--tan); }
+.contact-social-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--tan); transition: width 0.3s var(--ease-out-expo); }
+.contact-social-link:hover::after { width: 100%; }
+.contact-form { display: flex; flex-direction: column; gap: 2rem; }
+.form-group { position: relative; }
+.form-group input, .form-group textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.15); padding: 1rem 0; font-size: 0.95rem; color: var(--white); outline: none; transition: border-color 0.4s; font-family: var(--ff-sans); cursor: none; }
+.form-group input:focus, .form-group textarea:focus { border-color: var(--tan); }
+.form-group label { position: absolute; top: 1rem; left: 0; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); transition: all 0.3s var(--ease-out-expo); pointer-events: none; }
+.form-group input:focus ~ label, .form-group input:not(:placeholder-shown) ~ label, .form-group textarea:focus ~ label, .form-group textarea:not(:placeholder-shown) ~ label { top: -0.5rem; font-size: 0.6rem; color: var(--tan); }
+.form-group textarea { resize: none; height: 120px; }
+.form-submit { display: inline-flex; align-items: center; gap: 1rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--black); background: var(--tan); padding: 1.2rem 2.5rem; border: none; transition: all 0.4s var(--ease-out-expo); align-self: flex-start; font-family: var(--ff-sans); cursor: none; }
+.form-submit:hover { background: var(--tan-light); gap: 1.5rem; }
+
+/* FOOTER */
+.footer { background: var(--black); border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-family: var(--ff-display); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--gray); }
+.footer-right { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gray); }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .chapter-nav { display: none; }
+  .nav { padding: 1.2rem 2rem; }
+  .nav-menu { display: none; }
+  .hamburger { display: flex; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .about { padding: 6rem 2rem; }
+  .project { grid-template-columns: 1fr; min-height: auto; }
+  .project:nth-child(even) .project-image { order: 1; }
+  .project:nth-child(even) .project-info { order: 2; }
+  .project-image { aspect-ratio: 16/9; }
+  .project-info { padding: 3rem 2rem; }
+  .community { padding: 6rem 2rem; }
+  .community-grid { grid-template-columns: 1fr; }
+  .lookbooks { padding: 6rem 2rem; }
+  .lookbook-grid { grid-template-columns: repeat(3, 1fr); }
+  .service { padding: 6rem 2rem; }
+  .service-inner { grid-template-columns: 1fr; gap: 4rem; }
+  .skills-inner { grid-template-columns: repeat(2, 1fr); }
+  .contact { padding: 6rem 2rem; }
+  .contact-inner { grid-template-columns: 1fr; gap: 4rem; }
+}
+@media (max-width: 768px) {
+  .hero-name { font-size: clamp(2.8rem, 12vw, 5rem); }
+  .about-stats { gap: 2rem; }
+  .stat-number { font-size: 2rem; }
+  .project-info { padding: 2.5rem 1.5rem; }
+  .project-stats { gap: 1.5rem; }
+  .ps-num { font-size: 1.5rem; }
+  .lookbook-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer { flex-direction: column; gap: 1rem; text-align: center; }
+}
+@media (max-width: 480px) {
+  .hero-name { font-size: clamp(2.2rem, 14vw, 3.5rem); }
+  .about-image::after { display: none; }
+  .about-stats { flex-direction: column; gap: 1.5rem; }
+  .lookbook-grid { grid-template-columns: 1fr; }
+  .skills-inner { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-text"><span>K</span><span>a</span><span>i</span><span>t</span><span>l</span><span>y</span><span>n</span><span>&nbsp;</span><span>B</span><span>r</span><span>i</span><span>a</span><span>n</span><span>n</span><span>a</span></div>
+  <div class="preloader-line"></div>
+</div>
+
+<nav class="nav">
+  <a href="#home" class="nav-logo">Kaitlyn <em>Brianna</em></a>
+  <ul class="nav-menu">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Experience</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#lookbooks">Lookbooks</a></li>
+    <li><a href="#service">Philosophy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul class="mobile-menu-list">
+    <li><a href="#home" class="mobile-link">Home</a></li>
+    <li><a href="#about" class="mobile-link">About</a></li>
+    <li><a href="#portfolio" class="mobile-link">Experience</a></li>
+    <li><a href="#community" class="mobile-link">Community</a></li>
+    <li><a href="#lookbooks" class="mobile-link">Lookbooks</a></li>
+    <li><a href="#service" class="mobile-link">Philosophy</a></li>
+    <li><a href="#contact" class="mobile-link">Contact</a></li>
+  </ul>
+</div>
+
+<div class="chapter-nav" id="chapterNav">
+  <a href="#home" class="chapter-dot active" data-label="Home"></a>
+  <a href="#about" class="chapter-dot" data-label="About"></a>
+  <a href="#portfolio" class="chapter-dot" data-label="Experience"></a>
+  <a href="#community" class="chapter-dot" data-label="Community"></a>
+  <a href="#lookbooks" class="chapter-dot" data-label="Lookbooks"></a>
+  <a href="#service" class="chapter-dot" data-label="Philosophy"></a>
+  <a href="#contact" class="chapter-dot" data-label="Contact"></a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-deco hero-deco-left">K</div>
+  <div class="hero-deco hero-deco-right">B</div>
+  <div class="hero-content">
+    <p class="hero-overline">Client Experience & Fashion</p>
+    <h1 class="hero-name">
+      <span class="line"><span>Kaitlyn</span></span>
+      <span class="line"><span class="italic">Brianna</span></span>
+    </h1>
+    <p class="hero-title">Creating Meaningful, Lasting Experiences</p>
+  </div>
+  <div class="hero-scroll"><span>Scroll to explore</span><div class="hero-scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Client Development <span class="dot"></span></span>
+    <span class="marquee-item">Personal Styling <span class="dot"></span></span>
+    <span class="marquee-item">Visual Merchandising <span class="dot"></span></span>
+    <span class="marquee-item">Relationship Building <span class="dot"></span></span>
+    <span class="marquee-item">Brand Storytelling <span class="dot"></span></span>
+    <span class="marquee-item">Creative Direction <span class="dot"></span></span>
+    <span class="marquee-item">Event Production <span class="dot"></span></span>
+    <span class="marquee-item">Client Development <span class="dot"></span></span>
+    <span class="marquee-item">Personal Styling <span class="dot"></span></span>
+    <span class="marquee-item">Visual Merchandising <span class="dot"></span></span>
+    <span class="marquee-item">Relationship Building <span class="dot"></span></span>
+    <span class="marquee-item">Brand Storytelling <span class="dot"></span></span>
+    <span class="marquee-item">Creative Direction <span class="dot"></span></span>
+    <span class="marquee-item">Event Production <span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-image-wrapper reveal">
+      <div class="about-image">
+        <!-- HEADSHOT: Save your headshot as images/headshot.jpg -->
+        <img src="images/headshot.jpg" alt="Kaitlyn Brianna — Portrait">
+      </div>
+    </div>
+    <div class="about-content">
+      <p class="about-chapter reveal">The Story</p>
+      <h2 class="about-heading reveal reveal-delay-1">Where Relationships<br>Meet <em>Style</em></h2>
+      <p class="about-text reveal reveal-delay-2">
+        I'm Kaitlyn Brianna — a client-focused fashion professional who believes
+        the most meaningful moments in this industry happen between people, not
+        between people and products. My approach to service starts with listening,
+        and my approach to style starts with understanding.
+      </p>
+      <p class="about-text reveal reveal-delay-3">
+        From building client books at Bloomingdale's to styling editorial shoots
+        and directing community events, I bring the same intention to everything:
+        make the person in front of me feel seen, understood, and confident.
+      </p>
+      <div class="about-stats reveal reveal-delay-4">
+        <div><div class="stat-number">62</div><div class="stat-label">Clients Built</div></div>
+        <div><div class="stat-number">$47K</div><div class="stat-label">Repeat Revenue</div></div>
+        <div><div class="stat-number">24</div><div class="stat-label">Shoots Styled</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO / EXPERIENCE -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-header">
+    <p class="section-label reveal">The Work</p>
+    <h2 class="portfolio-heading reveal reveal-delay-1">Experience &amp;<br><em>Impact</em></h2>
+    <p class="portfolio-subhead reveal reveal-delay-2">Proof of excellence, measured in relationships and results.</p>
+  </div>
+
+  <!-- Bloomingdale's -->
+  <div class="project reveal">
+    <div class="project-image">
+      <div class="project-image-inner">
+        <!-- Save as images/classy-luxury.jpg -->
+        <img src="images/classy-luxury.jpg" alt="Classy Luxury — Styled by Kaitlyn Bri">
+      </div>
+    </div>
+    <div class="project-info">
+      <p class="project-number">Role 01</p>
+      <h3 class="project-title">Bloomingdale's<br>White Plains</h3>
+      <p class="project-role">Sales Associate &mdash; May 2025 &ndash; Present</p>
+      <div class="project-stats">
+        <div class="ps-item"><div class="ps-num">62</div><div class="ps-label">Active Clients</div></div>
+        <div class="ps-item"><div class="ps-num">$47K</div><div class="ps-label">Repeat Revenue</div></div>
+        <div class="ps-item"><div class="ps-num">41%</div><div class="ps-label">Conversion</div></div>
+      </div>
+      <p class="project-desc">Built a clienteling book of 62 active clients through handwritten notes, lookbook texts, and appointment-based selling. Executed 18 mannequin restyles and 6 full floor sets, driving a 22% sell-through lift.</p>
+      <div class="project-tags">
+        <span class="project-tag">Clienteling</span>
+        <span class="project-tag">Visual Merchandising</span>
+        <span class="project-tag">Sales Strategy</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rod & Gunn -->
+  <div class="project reveal">
+    <div class="project-image">
+      <div class="project-image-inner">
+        <!-- Save as images/nba-courtside.jpg -->
+        <img src="images/nba-courtside.jpg" alt="NBA Courtside Look Book — Styled by Kaitlyn Bri">
+      </div>
+    </div>
+    <div class="project-info">
+      <p class="project-number">Role 02</p>
+      <h3 class="project-title">Rod &amp; Gunn<br>White Plains</h3>
+      <p class="project-role">Sales Associate &mdash; May 2025 &ndash; Present</p>
+      <div class="project-stats">
+        <div class="ps-item"><div class="ps-num">+8%</div><div class="ps-label">ATV Growth</div></div>
+        <div class="ps-item"><div class="ps-num">Top 3</div><div class="ps-label">Of 11</div></div>
+        <div class="ps-item"><div class="ps-num">12%</div><div class="ps-label">Saturday Lift</div></div>
+      </div>
+      <p class="project-desc">Grew average transaction value 8% in 8 weeks by scripting three signature cross-sell pairings — now adopted store-wide. Built a weekly KPI dashboard that lifted Saturday conversion by 12%.</p>
+      <div class="project-tags">
+        <span class="project-tag">Sales Analytics</span>
+        <span class="project-tag">Cross-Selling</span>
+        <span class="project-tag">KPI Strategy</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fashion Stylist -->
+  <div class="project reveal">
+    <div class="project-image">
+      <div class="project-image-inner">
+        <!-- Save as images/effortless-luxury.jpg -->
+        <img src="images/golden-siren.jpg" alt="Golden Siren Look Book — Styled by Kaitlyn Bri">
+      </div>
+    </div>
+    <div class="project-info">
+      <p class="project-number">Role 03</p>
+      <h3 class="project-title">Freelance<br>Fashion Stylist</h3>
+      <p class="project-role">Self-Employed &mdash; June 2023 &ndash; Present</p>
+      <div class="project-stats">
+        <div class="ps-item"><div class="ps-num">24</div><div class="ps-label">Paid Shoots</div></div>
+        <div class="ps-item"><div class="ps-num">120+</div><div class="ps-label">Pieces Managed</div></div>
+        <div class="ps-item"><div class="ps-num">64%</div><div class="ps-label">Rebooking</div></div>
+      </div>
+      <p class="project-desc">Styled 24 paid shoots and 15 private clients across editorial, e-comm, and personal styling. Managed 120+ pieces across 7 showrooms with 100% on-time returns.</p>
+      <div class="project-tags">
+        <span class="project-tag">Editorial Styling</span>
+        <span class="project-tag">Wardrobe Curation</span>
+        <span class="project-tag">Client Relations</span>
+      </div>
+      <a href="#lookbooks" class="project-link">View Lookbooks <span class="project-link-arrow"></span></a>
+    </div>
+  </div>
+
+</section>
+
+<!-- COMMUNITY -->
+<section class="community" id="community">
+  <div class="community-inner">
+    <div class="community-header">
+      <p class="section-label reveal" style="color: var(--tan-dark);">Community & Impact</p>
+      <h2 class="community-heading reveal reveal-delay-1">Fashion as<br><em>Connection</em></h2>
+      <p class="community-subhead reveal reveal-delay-2">Initiative, cultural awareness, and collaboration — beyond the sales floor.</p>
+    </div>
+    <div class="community-grid">
+      <div class="comm-card reveal">
+        <div class="comm-card-image">ShareLove.Fund</div>
+        <p class="comm-card-label">Community Initiative</p>
+        <h3 class="comm-card-title">ShareLove.Fund</h3>
+        <p class="comm-card-desc">Designed 6 merch pieces for a nonprofit fundraising drop. 85% sell-through in 10 days, $4.2K raised. Co-planned a launch event for 80 attendees.</p>
+        <a href="#" class="comm-card-link">Learn More &rarr;</a>
+      </div>
+      <div class="comm-card reveal">
+        <div class="comm-card-image">Amerihome Realty</div>
+        <p class="comm-card-label">Client Coordination</p>
+        <h3 class="comm-card-title">Real Estate Intern</h3>
+        <p class="comm-card-desc">Conducted property tours, managed scheduling and staging logistics, and developed marketing assets for listings across online and print channels.</p>
+        <a href="#" class="comm-card-link">Details &rarr;</a>
+      </div>
+      <div class="comm-card reveal">
+        <div class="comm-card-image">International Experience</div>
+        <p class="comm-card-label">Cultural Fluency</p>
+        <h3 class="comm-card-title">Au Pair</h3>
+        <p class="comm-card-desc">Developed structured daily routines and communicated proactively. Built cross-cultural communication skills, emotional intelligence, and composure.</p>
+        <a href="#" class="comm-card-link">Details &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOOKBOOKS -->
+<section class="lookbooks" id="lookbooks">
+  <div class="lookbooks-header">
+    <p class="section-label reveal">The Eye</p>
+    <h2 class="lookbooks-heading reveal reveal-delay-1">Curated<br><em>Lookbooks</em></h2>
+    <p class="lookbooks-subhead reveal reveal-delay-2">Styled by Kaitlyn Bri &mdash; editorial, personal, and conceptual.</p>
+  </div>
+  <div class="lookbook-grid">
+    <!-- 1. Classy Luxury -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/classy-luxury.jpg" alt="Classy Luxury Lookbook">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Classy Luxury</div><div class="lookbook-overlay-cat">Effortless. Polished. Timeless.</div></div></div>
+    </div>
+
+    <!-- 3. Chanel Barbie -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/chanel-barbie.jpg" alt="Chanel Barbie Lookbook">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Chanel Barbie</div><div class="lookbook-overlay-cat">Polished. Playful. Timeless.</div></div></div>
+    </div>
+
+    <!-- 4. NBA Courtside -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/nba-courtside.jpg" alt="NBA Courtside Look Book">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">NBA Courtside</div><div class="lookbook-overlay-cat">Game Day</div></div></div>
+    </div>
+
+    <!-- 5. Vacation Edit — wide -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/vacation-edit.jpg" alt="Vacation Edit Look Book">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Vacation Edit</div><div class="lookbook-overlay-cat">Resort & Travel</div></div></div>
+    </div>
+
+    <!-- 6. Golden Siren — tall -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/golden-siren.jpg" alt="Golden Siren Lookbook">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Golden Siren</div><div class="lookbook-overlay-cat">Luxe. Wild. Untouchable.</div></div></div>
+    </div>
+
+    <!-- 7. Effortless Luxury -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/effortless-luxury.jpg" alt="Effortless Luxury Lookbook">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Effortless Luxury</div><div class="lookbook-overlay-cat">Editorial</div></div></div>
+    </div>
+
+    <!-- 8. Effortless Luxury 2 -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/effortless-luxury-2.jpg" alt="Effortless Luxury Lookbook II">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Effortless Luxury II</div><div class="lookbook-overlay-cat">Editorial</div></div></div>
+    </div>
+
+    <!-- 9. Everyday Elevated — wide -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/everyday-elevated.jpg" alt="Everyday Elevated Lookbook">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Everyday Elevated</div><div class="lookbook-overlay-cat">Rich. Textured. Effortless.</div></div></div>
+    </div>
+
+    <!-- 10. Untamed Glamour — tall -->
+    <div class="lookbook-item reveal">
+      <div class="lookbook-item-inner">
+        <img src="images/untamed-glamour.jpg" alt="Untamed Glamour Lookbook">
+      </div>
+      <div class="lookbook-overlay"><div><div class="lookbook-overlay-title">Untamed Glamour</div><div class="lookbook-overlay-cat">Bold. Wild. Unforgettable.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE -->
+<section class="service" id="service">
+  <div class="service-inner">
+    <div>
+      <p class="section-label reveal" style="color: var(--tan-dark);">My Approach</p>
+      <h2 class="service-heading reveal reveal-delay-1">How I Build<br><em>Relationships</em></h2>
+      <p class="service-intro reveal reveal-delay-2">Luxury service isn't a script — it's a sensibility. It's the ability to read a room, anticipate a need, and make someone feel like the most important person in it.</p>
+    </div>
+    <div>
+      <div class="pillar reveal"><div class="pillar-num">i.</div><h3 class="pillar-h">Listen Before You Style</h3><p class="pillar-p">Every relationship begins with understanding. I ask questions, notice details, and pay attention to what clients express — and what they don't.</p></div>
+      <div class="pillar reveal reveal-delay-1"><div class="pillar-num">ii.</div><h3 class="pillar-h">Remember What Matters</h3><p class="pillar-p">A client's daughter's graduation. Their preference for relaxed fits. These aren't small details — they're the foundation of trust.</p></div>
+      <div class="pillar reveal reveal-delay-2"><div class="pillar-num">iii.</div><h3 class="pillar-h">Create Comfort, Not Pressure</h3><p class="pillar-p">The best sales never feel like sales. I create an environment where clients feel free to explore, ask questions, and take their time.</p></div>
+      <div class="pillar reveal reveal-delay-3"><div class="pillar-num">iv.</div><h3 class="pillar-h">Elevate Every Touchpoint</h3><p class="pillar-p">From the first greeting to the follow-up text days later — the in-between moments matter as much as the sale itself.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div class="skills-strip">
+  <div class="skills-inner">
+    <div class="reveal"><p class="sg-title">Client & Sales</p><div class="sg-items">Clienteling & CRM<br>Styling & Wardrobe Curation<br>Visual Merchandising<br>Sales Strategy</div></div>
+    <div class="reveal reveal-delay-1"><p class="sg-title">Technical</p><div class="sg-items">Microsoft Office Suite<br>POS Systems & Analytics<br>CPR / AED Certified</div></div>
+    <div class="reveal reveal-delay-2"><p class="sg-title">Languages</p><div class="sg-items">English — Native<br>Spanish — Intermediate<br>French — Elementary</div></div>
+    <div class="reveal reveal-delay-3"><p class="sg-title">Strengths</p><div class="sg-items">Relationship Building<br>Event Coordination<br>Brand Storytelling<br>Cross-Cultural Fluency</div></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <p class="section-label reveal">Let's Connect</p>
+      <h2 class="contact-heading reveal reveal-delay-1">Start a<br><em>Conversation</em></h2>
+      <p class="contact-text reveal reveal-delay-2">Whether you're looking for a dedicated client advisor, a creative collaborator, or a fashion professional who puts relationships first — I'd love to hear from you.</p>
+      <div class="contact-details reveal reveal-delay-3">
+        <a href="mailto:kaitlyn.holness@gmail.com">kaitlyn.holness@gmail.com</a>
+        <a href="tel:9145636579">(914) 563-6579</a>
+        <a>Westchester, NY</a>
+      </div>
+      <div class="contact-socials reveal reveal-delay-4">
+        <a href="https://instagram.com/kaitlynbriii_" target="_blank" class="contact-social-link">Instagram</a>
+        <a href="#" class="contact-social-link">LinkedIn</a>
+        <a href="https://pinterest.com/kaitlynholness" target="_blank" class="contact-social-link">Pinterest</a>
+      </div>
+    </div>
+    <form class="contact-form reveal reveal-delay-2" onsubmit="handleFormSubmit(event)">
+      <div class="form-group"><input type="text" id="name" placeholder=" " required><label for="name">Your Name</label></div>
+      <div class="form-group"><input type="email" id="email" placeholder=" " required><label for="email">Email Address</label></div>
+      <div class="form-group"><input type="text" id="subject" placeholder=" "><label for="subject">Subject</label></div>
+      <div class="form-group"><textarea id="message" placeholder=" " required></textarea><label for="message">Your Message</label></div>
+      <button type="submit" class="form-submit">Send Message <span>&rarr;</span></button>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-left">&copy; 2026 Kaitlyn Brianna. All rights reserved.</div>
+  <div class="footer-right">Designed with intention. Built with precision.</div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+  const preloader = document.getElementById('preloader');
+  preloader.querySelectorAll('.preloader-text span').forEach((c,i) => { c.style.animationDelay = `${i*0.05}s`; });
+  window.addEventListener('load', () => { setTimeout(() => { preloader.classList.add('hidden'); setTimeout(animateHero, 300); }, 2200); });
+
+  function animateHero() {
+    document.querySelectorAll('.hero-name .line span').forEach((l,i) => {
+      setTimeout(() => { l.style.transition = `transform 1s ${getComputedStyle(document.documentElement).getPropertyValue('--ease-out-expo')}`; l.style.transform = 'translateY(0)'; }, i*150);
+    });
+    const ov = document.querySelector('.hero-overline'), ti = document.querySelector('.hero-title'), sc = document.querySelector('.hero-scroll');
+    setTimeout(() => { ov.style.transition = 'opacity 0.8s ease, transform 0.8s ease'; ov.style.opacity = '1'; ov.style.transform = 'translateY(0)'; }, 400);
+    setTimeout(() => { ti.style.transition = 'opacity 0.8s ease, transform 0.8s ease'; ti.style.opacity = '1'; ti.style.transform = 'translateY(0)'; }, 700);
+    setTimeout(() => { sc.style.transition = 'opacity 1s ease'; sc.style.opacity = '1'; }, 1200);
+  }
+
+  const cursor = document.getElementById('cursor'), follower = document.getElementById('cursorFollower');
+  let mx=0, my=0, fx=0, fy=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.transform = `translate(${mx-6}px, ${my-6}px)`; });
+  (function anim() { fx+=(mx-fx)*0.12; fy+=(my-fy)*0.12; follower.style.transform = `translate(${fx-20}px, ${fy-20}px)`; requestAnimationFrame(anim); })();
+  document.querySelectorAll('a, button, input, textarea, .project, .comm-card, .lookbook-item').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.classList.add('hovering'); follower.classList.add('hovering'); });
+    el.addEventListener('mouseleave', () => { cursor.classList.remove('hovering'); follower.classList.remove('hovering'); });
+  });
+
+  const ro = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  const dots = document.querySelectorAll('.chapter-dot');
+  const so = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) { const id=e.target.getAttribute('id'); dots.forEach(d=>d.classList.remove('active')); const a=document.querySelector(`.chapter-dot[href="#${id}"]`); if(a) a.classList.add('active'); } }); }, { threshold: 0.3 });
+  document.querySelectorAll('section[id]').forEach(s => so.observe(s));
+
+  const hb = document.getElementById('hamburger'), mm = document.getElementById('mobileMenu');
+  hb.addEventListener('click', () => { hb.classList.toggle('open'); mm.classList.toggle('open'); document.body.style.overflow = mm.classList.contains('open') ? 'hidden' : ''; });
+  document.querySelectorAll('.mobile-link').forEach(l => { l.addEventListener('click', () => { hb.classList.remove('open'); mm.classList.remove('open'); document.body.style.overflow = ''; }); });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', function(e) { e.preventDefault(); const t=document.querySelector(this.getAttribute('href')); if(t) t.scrollIntoView({ behavior:'smooth', block:'start' }); }); });
+
+  const dl = document.querySelector('.hero-deco-left'), dr = document.querySelector('.hero-deco-right');
+  window.addEventListener('scroll', () => { const s=window.pageYOffset; if(s<window.innerHeight) { if(dl) dl.style.transform=`translateY(${s*0.3}px)`; if(dr) dr.style.transform=`translateY(${-s*0.3}px)`; } });
+  const nav = document.querySelector('.nav');
+  window.addEventListener('scroll', () => { nav.style.padding = window.pageYOffset > 100 ? '1rem 3rem' : '1.5rem 3rem'; });
+})();
+
+function handleFormSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit'), orig = btn.innerHTML;
+  btn.innerHTML = 'Message Sent! &#10003;'; btn.style.background = '#2A6B3A'; btn.style.color = '#fff';
+  setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; e.target.reset(); }, 3000);
+}
+</script>
+</body>
+</html>
